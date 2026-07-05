@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Try On — Pin2Wear</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    .tryon-page-header { padding: 22px 20px 0; }
+    .tryon-page-header h1 { font-family: 'Playfair Display', serif; font-style: italic; font-size: 26px; font-weight: 500; color: #e8437a; margin: 0 0 4px; }
+    .tryon-page-header p { font-size: 13px; color: #c090b0; margin: 0; }
+    .steps-row { display: flex; align-items: center; padding: 18px 20px 0; }
+    .step { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 500; color: #d0a0b8; }
+    .step.active { color: #e8437a; }
+    .step.done   { color: #c090b0; }
+    .step-num { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid #f5b8d0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: #d0a0b8; flex-shrink: 0; }
+    .step.active .step-num { background: #e8437a; border-color: #e8437a; color: #fff; }
+    .step.done   .step-num { background: #f5b8d0; border-color: #f5b8d0; color: #fff; }
+    .step-line { flex: 1; height: 1px; background: #f5b8d0; margin: 0 10px; }
+    .tryon-wrapper { display: flex; gap: 16px; padding: 18px 20px 40px; align-items: flex-start; }
+    .panel-label { font-size: 10px; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: #c090b0; margin-bottom: 10px; }
+    .selected-item-panel { width: 200px; flex-shrink: 0; }
+    .selected-item-card { background: #fff; border-radius: 18px; overflow: hidden; border: 1.5px solid #f5b8d0; margin-bottom: 10px; box-shadow: 0 2px 8px rgba(232,67,122,0.08); }
+    .selected-item-card img { width: 100%; height: 240px; object-fit: cover; display: block; }
+    .selected-item-info { padding: 12px; }
+    .selected-item-name { font-size: 13px; font-weight: 500; color: #1a1a1a; margin-bottom: 3px; }
+    .selected-item-category { font-size: 11px; color: #c090b0; }
+    .change-item-btn { width: 100%; padding: 9px; border: 1.5px solid #f5b8d0; background: transparent; border-radius: 20px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: #b060a0; cursor: pointer; transition: all 0.15s; }
+    .change-item-btn:hover { background: #fce8f0; }
+    .upload-panel { flex: 1; }
+    .upload-zone { border: 2px dashed #f5b8d0; border-radius: 22px; background: #fff8fb; min-height: 340px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: #e8437a; background: #fce8f0; }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; pointer-events: none; }
+    .upload-icon-circle { width: 52px; height: 52px; background: #fce8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .upload-icon-circle svg { width: 22px; height: 22px; stroke: #e8437a; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .upload-title { font-size: 15px; font-weight: 500; color: #1a1a1a; margin: 0; }
+    .upload-sub { font-size: 12px; color: #c090b0; margin: 0; text-align: center; line-height: 1.6; }
+    .upload-cta { background: #e8437a; color: white; border-radius: 30px; padding: 9px 22px; font-size: 12px; font-weight: 600; font-family: 'DM Sans', sans-serif; pointer-events: none; }
+    .upload-zone.has-image { border-style: solid; border-color: #f5b8d0; background: #fff; min-height: 380px; }
+    .upload-zone.has-image .upload-placeholder { display: none; }
+    .preview-img { display: none; width: 100%; height: 100%; object-fit: contain; max-height: 380px; border-radius: 20px; }
+    .upload-zone.has-image .preview-img { display: block; }
+    .processing-overlay { display: none; position: absolute; inset: 0; background: rgba(255,248,251,0.9); border-radius: 20px; flex-direction: column; align-items: center; justify-content: center; gap: 14px; z-index: 10; }
+    .processing-overlay.active { display: flex; }
+    .spinner { width: 34px; height: 34px; border: 3px solid #f5b8d0; border-top-color: #e8437a; border-radius: 50%; animation: spin 0.75s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .processing-text { font-size: 13px; color: #c090b0; font-weight: 500; }
+    .processing-steps { font-size: 11px; color: #d0a0b8; text-align: center; line-height: 1.8; }
+    .tips-row { display: flex; gap: 8px; margin-top: 12px; }
+    .tip-card { flex: 1; background: #fff; border: 1.5px solid #f5b8d0; border-radius: 14px; padding: 10px 12px; display: flex; align-items: flex-start; gap: 8px; box-shadow: 0 1px 4px rgba(232,67,122,0.06); }
+    .tip-icon { font-size: 16px; line-height: 1; margin-top: 1px; }
+    .tip-text { font-size: 11px; color: #c090b0; line-height: 1.5; }
+    .tip-text strong { display: block; color: #b060a0; font-weight: 600; font-size: 12px; margin-bottom: 1px; }
+    .tryon-action { margin-top: 14px; display: flex; gap: 10px; align-items: center; }
+    .tryon-btn { flex: 1; padding: 13px 20px; background: #e8437a; color: #fff; border: none; border-radius: 30px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .tryon-btn:hover { background: #c62a5e; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,67,122,0.3); }
+    .tryon-btn:disabled { background: #f5b8d0; color: #fff; cursor: not-allowed; transform: none; box-shadow: none; }
+    .tryon-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .reset-btn { padding: 13px 18px; border: 1.5px solid #f5b8d0; background: transparent; border-radius: 30px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: #c090b0; cursor: pointer; transition: all 0.15s; }
+    .reset-btn:hover { background: #fce8f0; color: #b060a0; }
+    .result-panel { flex-shrink: 0; width: 200px; }
+    .result-box { background: #fff; border: 1.5px solid #f5b8d0; border-radius: 18px; overflow: hidden; min-height: 280px; display: flex; align-items: center; justify-content: center; flex-direction: column; box-shadow: 0 2px 8px rgba(232,67,122,0.08); }
+    .result-placeholder { text-align: center; padding: 24px 16px; }
+    .result-placeholder-icon { width: 44px; height: 44px; background: #fce8f0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+    .result-placeholder-icon svg { width: 20px; height: 20px; stroke: #f5b8d0; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .result-placeholder p { font-size: 12px; color: #c090b0; margin: 0; line-height: 1.6; }
+    .result-img { width: 100%; display: none; border-radius: 16px; }
+    .save-btn { display: flex; align-items: center; gap: 7px; padding: 10px 16px; border: 1.5px solid #f5b8d0; background: #fff; border-radius: 30px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: #e8437a; cursor: pointer; transition: all 0.15s; margin-top: 10px; width: 100%; justify-content: center; }
+    .save-btn:hover { background: #fce8f0; border-color: #e8437a; }
+    .save-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .error-toast { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; padding: 12px 20px; border-radius: 30px; font-size: 13px; font-family: 'DM Sans', sans-serif; z-index: 999; white-space: nowrap; }
+    .error-toast.show { display: block; }
+    @media (max-width: 860px) { .tryon-wrapper { flex-direction: column; } .selected-item-panel, .result-panel { width: 100%; } }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="logo">Pin2<br>Wear</div>
+    <div class="sidebar-icons">
+      <a href="index.html" class="icon"><img src="assets/icons/home.svg" alt="Home"></a>
+      <a href="#" class="icon"><img src="assets/icons/notifications.svg" alt="Notifications"></a>
+      <a href="tryon.html" class="icon active"><img src="assets/icons/plus.svg" alt="Try On"></a>
+    </div>
+    <a href="moodboard.html" class="icon bottom"><img src="assets/icons/profile.svg" alt="Profile"></a>
+  </aside>
+
+  <main class="main">
+
+    <div class="tryon-page-header">
+      <h1>Try It On Yourself</h1>
+      <p>Upload your photo and see how the outfit looks on you.</p>
+    </div>
+
+    <div class="steps-row" id="stepsRow">
+      <div class="step done" id="step1">
+        <div class="step-num">✓</div><span>Select item</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step active" id="step2">
+        <div class="step-num">2</div><span>Upload photo</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step" id="step3">
+        <div class="step-num">3</div><span>See result</span>
+      </div>
+    </div>
+
+    <div class="tryon-wrapper">
+
+      <!-- LEFT -->
+      <div class="selected-item-panel">
+        <p class="panel-label">Selected Item</p>
+        <div class="selected-item-card">
+          <img id="selectedItemImg" src="assets/images/dress7.jpg" alt="Selected item">
+          <div class="selected-item-info">
+            <div class="selected-item-name" id="selectedItemName">Floral Wrap Dress</div>
+            <div class="selected-item-category" id="selectedItemCategory">Dresses</div>
+          </div>
+        </div>
+        <button class="change-item-btn" onclick="window.location.href='index.html'">← Change Item</button>
+      </div>
+
+      <!-- CENTER -->
+      <div class="upload-panel">
+        <p class="panel-label">Your Photo</p>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="photoInput" accept="image/*">
+          <div class="upload-placeholder" style="display:flex;flex-direction:column;align-items:center;gap:12px;">
+            <div class="upload-icon-circle">
+              <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            </div>
+            <p class="upload-title">Upload your photo</p>
+            <p class="upload-sub">Drag & drop or click to browse<br>Full body or upper body works best</p>
+            <span class="upload-cta">Choose Photo</span>
+          </div>
+          <img class="preview-img" id="previewImg" alt="Your photo">
+          <div class="processing-overlay" id="processingOverlay">
+            <div class="spinner"></div>
+            <p class="processing-text">Generating your look...</p>
+            <p class="processing-steps" id="processingSteps">✂️ Extracting garment...</p>
+          </div>
+        </div>
+
+        <div class="tips-row">
+          <div class="tip-card">
+            <div class="tip-icon">🧍</div>
+            <div class="tip-text"><strong>Full body</strong>Stand straight, arms slightly out</div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-icon">💡</div>
+            <div class="tip-text"><strong>Good lighting</strong>Bright, even light works best</div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-icon">🖼️</div>
+            <div class="tip-text"><strong>Plain background</strong>Solid walls give better results</div>
+          </div>
+        </div>
+
+        <div class="tryon-action">
+          <button class="tryon-btn" id="tryOnBtn" disabled>
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Try This On
+          </button>
+          <button class="reset-btn" id="resetBtn" onclick="resetUpload()" style="display:none">Reset</button>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="result-panel">
+        <p class="panel-label">Your Look</p>
+        <div class="result-box" id="resultBox">
+          <div class="result-placeholder" id="resultPlaceholder">
+            <div class="result-placeholder-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <p>Your result will<br>appear here</p>
+          </div>
+          <img class="result-img" id="resultImg" alt="Try-on result">
+        </div>
+        <button class="save-btn" id="saveBtn" style="display:none">
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          Save to Moodboard
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <div class="error-toast" id="errorToast">⚠️ Server not reachable. Make sure your Colab is running.</div>
+
+  <script>
+    // ── UPDATE THIS every time you restart Colab ──
+    const API_URL = "https://pin2wear-tryon-api-xyz123.onrender.com"; // Replace with your actual API URL
+
+    const photoInput        = document.getElementById('photoInput');
+    const uploadZone        = document.getElementById('uploadZone');
+    const previewImg        = document.getElementById('previewImg');
+    const tryOnBtn          = document.getElementById('tryOnBtn');
+    const resetBtn          = document.getElementById('resetBtn');
+    const processingOverlay = document.getElementById('processingOverlay');
+    const processingSteps   = document.getElementById('processingSteps');
+    const resultImg         = document.getElementById('resultImg');
+    const resultPlaceholder = document.getElementById('resultPlaceholder');
+    const saveBtn           = document.getElementById('saveBtn');
+    const step2El           = document.getElementById('step2');
+    const step3El           = document.getElementById('step3');
+    const errorToast        = document.getElementById('errorToast');
+
+    // ── Load garment from URL params ──
+    const params       = new URLSearchParams(window.location.search);
+    const itemImage    = params.get('item');
+    const itemLabel    = params.get('label');
+    const itemCategory = params.get('category');
+
+    if (itemImage)    document.getElementById('selectedItemImg').src = itemImage;
+    if (itemLabel)    document.getElementById('selectedItemName').textContent = itemLabel;
+    if (itemCategory) document.getElementById('selectedItemCategory').textContent = itemCategory;
+
+    if (!itemImage) {
+      const stored = sessionStorage.getItem('tryonItem');
+      if (stored) {
+        const item = JSON.parse(stored);
+        if (item.image)    document.getElementById('selectedItemImg').src = item.image;
+        if (item.name)     document.getElementById('selectedItemName').textContent = item.name;
+        if (item.category) document.getElementById('selectedItemCategory').textContent = item.category;
+      }
+    }
+
+    uploadZone.addEventListener('click', () => photoInput.click());
+
+    photoInput.addEventListener('change', function () {
+      if (this.files[0]) handleFile(this.files[0]);
+    });
+
+    uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+    uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('drag-over');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) handleFile(file);
+    });
+
+    function handleFile(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewImg.src = e.target.result;
+        uploadZone.classList.add('has-image');
+        tryOnBtn.disabled = false;
+        resetBtn.style.display = 'block';
+        step2El.className = 'step done';
+        step2El.querySelector('.step-num').textContent = '✓';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function resetUpload() {
+      photoInput.value = '';
+      previewImg.src = '';
+      uploadZone.classList.remove('has-image');
+      tryOnBtn.disabled = true;
+      resetBtn.style.display = 'none';
+      resultImg.style.display = 'none';
+      resultPlaceholder.style.display = 'block';
+      saveBtn.style.display = 'none';
+      step2El.className = 'step active';
+      step2El.querySelector('.step-num').textContent = '2';
+      step3El.className = 'step';
+      step3El.querySelector('.step-num').textContent = '3';
+      if (itemImage) document.getElementById('selectedItemImg').src = itemImage;
+    }
+
+    function showError(msg) {
+      errorToast.textContent = msg;
+      errorToast.classList.add('show');
+      setTimeout(() => errorToast.classList.remove('show'), 4000);
+    }
+
+    function animateProcessingSteps() {
+      const steps = [
+        "✂️ Extracting garment from image...",
+        "🧍 Analysing your body pose...",
+        "👗 Fitting the garment on you...",
+        "✨ Finishing touches...",
+      ];
+      let i = 0;
+      processingSteps.textContent = steps[0];
+      return setInterval(() => {
+        i++;
+        processingSteps.textContent = steps[i % steps.length];
+      }, 3000);
+    }
+
+    tryOnBtn.addEventListener('click', async function () {
+      processingOverlay.classList.add('active');
+      tryOnBtn.disabled = true;
+      const stepInterval = animateProcessingSteps();
+
+      try {
+        const personFile = photoInput.files[0];
+        if (!personFile) {
+          showError('Please upload your photo first.');
+          processingOverlay.classList.remove('active');
+          tryOnBtn.disabled = false;
+          clearInterval(stepInterval);
+          return;
+        }
+
+        const garmentSrc   = document.getElementById('selectedItemImg').src;
+        const garmentBlob  = await fetch(garmentSrc).then(r => r.blob());
+        const garmentFile  = new File([garmentBlob], 'garment.jpg', { type: 'image/jpeg' });
+        const garmentLabel = document.getElementById('selectedItemName').textContent;
+
+        const formData = new FormData();
+        formData.append("person", personFile);
+        formData.append("garment", garmentFile);
+        formData.append("garment_label", garmentLabel);
+
+        const res = await fetch(`${API_URL}/tryon`, { method: "POST", body: formData });
+        if (!res.ok) throw new Error(`Server error: ${res.status}`);
+
+        const data = await res.json();
+
+        clearInterval(stepInterval);
+        processingOverlay.classList.remove('active');
+
+        if (data.extracted_garment) {
+          document.getElementById('selectedItemImg').src = data.extracted_garment;
+        }
+
+        showResult(data.result_image);
+
+      } catch (err) {
+        console.error(err);
+        clearInterval(stepInterval);
+        processingOverlay.classList.remove('active');
+        showError('⚠️ Server not reachable. Make sure your Colab cell is still running.');
+      }
+
+      tryOnBtn.disabled = false;
+    });
+
+    function showResult(src) {
+      resultImg.src = src;
+      resultImg.style.display = 'block';
+      resultPlaceholder.style.display = 'none';
+      saveBtn.style.display = 'flex';
+      step3El.className = 'step done';
+      step3El.querySelector('.step-num').textContent = '✓';
+    }
+
+    saveBtn.addEventListener('click', function () {
+      const moodboard = JSON.parse(localStorage.getItem('moodboard') || '[]');
+      const item = {
+        image: resultImg.src,
+        name: document.getElementById('selectedItemName').textContent,
+        category: document.getElementById('selectedItemCategory').textContent
+      };
+      if (!moodboard.find(i => i.name === item.name)) {
+        moodboard.push(item);
+        localStorage.setItem('moodboard', JSON.stringify(moodboard));
+      }
+      saveBtn.innerHTML = `<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><polyline points="20 6 9 17 4 12"/></svg> Saved!`;
+      setTimeout(() => {
+        saveBtn.innerHTML = `<svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> Save to Moodboard`;
+      }, 2000);
+    });
+  </script>
+
+</body>
+</html>
