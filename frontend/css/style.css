@@ -1,0 +1,366 @@
+/* ===========================
+   PIN2WEAR — style.css
+   =========================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #fff8fb;
+  display: flex;
+  min-height: 100vh;
+}
+
+
+/* ===========================
+   SIDEBAR
+   =========================== */
+
+.sidebar {
+  width: 76px;
+  background: #fdf0f6;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 20px 0;
+  border-right: 0.5px solid #f5b8d0;
+
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 12px;
+  font-weight: 500;
+  color: #e8437a;
+  text-align: center;
+  line-height: 1.3;
+  margin-bottom: 16px;
+}
+
+/* Middle icons group — vertically centered */
+.sidebar-icons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+
+.icon {
+  width: 44px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 13px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.icon img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  /* tint icons pink using CSS filter */
+  filter: invert(42%) sepia(60%) saturate(500%) hue-rotate(295deg) brightness(90%);
+}
+
+.icon:hover {
+  background: #fce8f0;
+}
+
+.icon.active {
+  background: #f5b8d0;
+}
+
+/* Profile icon pinned to bottom */
+.icon.bottom {
+  margin-top: auto;
+  margin-bottom: 4px;
+}
+
+
+/* ===========================
+   MAIN AREA
+   =========================== */
+
+.main {
+  margin-left: 76px;
+  width: calc(100% - 76px);
+  min-height: 100vh;
+}
+
+
+/* ===========================
+   TOP BAR
+   =========================== */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #fff8fb;
+  padding: 16px 20px 12px;
+  border-bottom: 0.5px solid rgba(232, 67, 122, 0.1);
+}
+
+.search-container {
+  position: relative;
+  width: 100%;
+  max-width: 920px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 17px;
+  height: 17px;
+  opacity: 0.45;
+}
+
+.topbar input {
+  width: 100%;
+  padding: 10px 18px 10px 42px;
+  border-radius: 30px;
+  border: 1.5px solid #f5b8d0;
+  background: white;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  color: #1a1a1a;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.topbar input::placeholder {
+  color: #c090b0;
+}
+
+.topbar input:focus {
+  border-color: #e8437a;
+}
+
+
+/* ===========================
+   CATEGORY PILLS
+   =========================== */
+
+.category-pills {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.category-pills::-webkit-scrollbar {
+  display: none;
+}
+
+.pill {
+  flex-shrink: 0;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: white;
+  color: #b060a0;
+  border: 1px solid #f5b8d0;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.pill:hover:not(.active) {
+  background: #fce8f0;
+}
+
+.pill.active {
+  background: #e8437a;
+  color: white;
+  border-color: #e8437a;
+}
+
+
+/* ===========================
+   PIN FEED — masonry
+   =========================== */
+
+.feed {
+  columns: 3;
+  column-gap: 12px;
+  padding: 14px 20px 40px;
+}
+
+@media (max-width: 900px) {
+  .feed { columns: 2; }
+}
+
+@media (max-width: 560px) {
+  .feed { columns: 1; }
+}
+
+
+/* ===========================
+   PIN CARD
+   =========================== */
+
+.pin {
+  break-inside: avoid;
+  margin-bottom: 12px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: white;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(232, 67, 122, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.pin:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(232, 67, 122, 0.18);
+}
+
+.pin img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* Hover overlay */
+.pin-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* only covers the image, not the info row */
+  bottom: 52px;
+
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 30%,
+    rgba(0, 0, 0, 0.48) 100%
+  );
+
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+
+  border-radius: 18px 18px 0 0;
+}
+
+.pin:hover .pin-overlay {
+  opacity: 1;
+}
+
+/* Save button — top right */
+.pin-save {
+  align-self: flex-end;
+  background: #e8437a;
+  color: white;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.15s;
+}
+
+.pin-save:hover {
+  background: #c62a5e;
+}
+
+/* Bottom row inside overlay */
+.pin-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.pin-title {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: white;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Try on button — bottom right */
+.pin-try {
+  background: white;
+  color: #e8437a;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.pin-try:hover {
+  background: #fce8f0;
+}
+
+/* Info row below image */
+.pin-info {
+  padding: 8px 12px 10px;
+}
+
+.pin-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.pin-sub {
+  font-size: 11px;
+  color: #999;
+  margin-top: 2px;
+}
+
+
+/* ===========================
+   SAVED STATE & LOADING
+   =========================== */
+
+.pin-save.saved {
+  background: #1a1a1a;
+  color: white;
+}
+
+.loading-msg {
+  color: #c090b0;
+  font-size: 13px;
+  padding: 40px 20px;
+}
