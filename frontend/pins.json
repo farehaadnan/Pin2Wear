@@ -1,0 +1,20 @@
+[
+  { "id": 1, "image": "assets/images/shirt_1.jpeg", "label": "Blossom Whisper Top", "sub": "Floral Upper • Free Size", "category": "upper" },
+  { "id": 2, "image": "assets/images/dress_1.jpeg", "label": "Ruby Mirage Gown", "sub": "Evening Dress • Free Size", "category": "dress" },
+  { "id": 3, "image": "assets/images/shirt_2.jpeg", "label": "Golden Mosaic Shirt", "sub": "Geometric Upper • Free Size", "category": "upper" },
+  { "id": 4, "image": "assets/images/shirt_3.jpeg", "label": "Ocean Breeze Blouse", "sub": "Abstract Upper • Free Size", "category": "upper" },
+  { "id": 5, "image": "assets/images/dress_2.jpeg", "label": "Velvet Ember Dress", "sub": "Evening Dress • Free Size", "category": "dress" },
+  { "id": 6, "image": "assets/images/dress_3.jpeg", "label": "Ivory Bloom Dress", "sub": "Casual Dress • Free Size", "category": "dress" },
+  { "id": 7, "image": "assets/images/shirt_4.jpeg", "label": "Midnight Flora Top", "sub": "Printed Upper • Free Size", "category": "upper" },
+  { "id": 8, "image": "assets/images/shirt_5.jpeg", "label": "Neon Pulse Jacket", "sub": "Street Upper • Free Size", "category": "upper" },
+  { "id": 9, "image": "assets/images/pants_1.jpeg", "label": "Sandy Dunes Skirt", "sub": "Casual Lower • Free Size", "category": "lower" },
+  { "id": 10, "image": "assets/images/dress_4.jpeg", "label": "Crystal Echo Gown", "sub": "Luxury Dress • Free Size", "category": "dress" },
+  { "id": 11, "image": "assets/images/shirt_6.jpeg", "label": "Forest Whisper Top", "sub": "Nature Upper • Free Size", "category": "upper" },
+  { "id": 12, "image": "assets/images/shirt_7.jpeg", "label": "Silver Horizon Tee", "sub": "Minimal Upper • Free Size", "category": "upper" },
+  { "id": 13, "image": "assets/images/dress_5.jpeg", "label": "Cherry Blossom Dress", "sub": "Floral Dress • Free Size", "category": "dress" },
+  { "id": 14, "image": "assets/images/dress_6.jpeg", "label": "Pearl Mist Gown", "sub": "Classic Dress • Free Size", "category": "dress" },
+  { "id": 15, "image": "assets/images/shirt_8.jpeg", "label": "Galaxy Weave Top", "sub": "Cosmic Upper • Free Size", "category": "upper" },
+  { "id": 16, "image": "assets/images/dress_7.jpeg", "label": "Sunset Harmony Dress", "sub": "Gradient Dress • Free Size", "category": "dress" },
+  { "id": 17, "image": "assets/images/shirt_9.jpeg", "label": "Aurora Glow Top", "sub": "Fantasy Upper • Free Size", "category": "upper" },
+  { "id": 18, "image": "assets/images/pants_2.jpeg", "label": "Obsidian Luxe Pants", "sub": "Premium Lower • Free Size", "category": "lower" }
+]
