@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pin2Wear</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="logo">Pin2<br>Wear</div>
+
+    <div class="sidebar-icons">
+      <a href="index.html" class="icon active">
+        <img src="assets/icons/home.svg" alt="Home">
+      </a>
+      <a href="#" class="icon">
+        <img src="assets/icons/notifications.svg" alt="Notifications">
+      </a>
+      <a href="#" class="icon">
+        <img src="assets/icons/plus.svg" alt="Create">
+      </a>
+    </div>
+
+    <a href="moodboard.html" class="icon bottom">
+      <img src="assets/icons/profile.svg" alt="Profile">
+    </a>
+
+  </aside>
+
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+      <div class="search-container">
+        <img src="assets/icons/search.svg" alt="Search" class="search-icon">
+        <input type="text" placeholder="Search">
+      </div>
+    </header>
+
+    <!-- CATEGORY PILLS -->
+    <div class="category-pills">
+      <span class="pill active">All</span>
+      <span class="pill">Shirts</span>
+      <span class="pill">Pants</span>
+      <span class="pill">Dresses</span>
+     
+    </div>
+
+    <!-- PIN FEED — rendered by feed.js -->
+    <section class="feed" id="feed">
+      <p class="loading-msg">Loading feed...</p>
+    </section>
+
+  </main>
+
+  <script src="js/feed.js"></script>
+
+</body>
+</html>
