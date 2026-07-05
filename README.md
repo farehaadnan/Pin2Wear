@@ -3,6 +3,13 @@
 A web app that lets users upload a photo and see how a selected garment 
 looks on them, powered by CatVTON via Hugging Face Spaces.
 
+## Demo
+
+![Pin2Wear result](docs/demo/res.png)
+
+🎥 [Watch the full demo on LinkedIn](https://www.linkedin.com/in/fareha-adnan-218784383/)
+
+
 ## How it works
 - Frontend: HTML/CSS/JS (no framework)
 - Backend: Flask server that calls the CatVTON Gradio Space via `gradio_client`
