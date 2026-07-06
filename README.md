@@ -77,7 +77,7 @@ This app calls CatVTON's `/submit_function_p2p` endpoint (a "person-to-person" s
 
 | Component | URL |
 |---|---|
-| Frontend | https://pin2wear.netlify.app |
+| Frontend | https://pin2wearr.netlify.app |
 | Backend API | https://pin2wear.onrender.com |
 | Backend health check | https://pin2wear.onrender.com/health |
 
