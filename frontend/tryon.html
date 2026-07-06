@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Try On — Pin2Wear</title>
   <link rel="stylesheet" href="css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
     .selected-item-category { font-size: 11px; color: #c090b0; }
     .change-item-btn { width: 100%; padding: 9px; border: 1.5px solid #f5b8d0; background: transparent; border-radius: 20px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: #b060a0; cursor: pointer; transition: all 0.15s; }
     .change-item-btn:hover { background: #fce8f0; }
-    .upload-panel { flex: 1; }
+    .upload-panel { flex: 1; min-width: 0; }
     .upload-zone { border: 2px dashed #f5b8d0; border-radius: 22px; background: #fff8fb; min-height: 340px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
     .upload-zone:hover, .upload-zone.drag-over { border-color: #e8437a; background: #fce8f0; }
     .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; pointer-events: none; }
@@ -46,11 +46,11 @@
     .spinner { width: 34px; height: 34px; border: 3px solid #f5b8d0; border-top-color: #e8437a; border-radius: 50%; animation: spin 0.75s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .processing-text { font-size: 13px; color: #c090b0; font-weight: 500; }
-    .processing-steps { font-size: 11px; color: #d0a0b8; text-align: center; line-height: 1.8; }
+    .processing-steps { font-size: 11px; color: #d0a0b8; text-align: center; line-height: 1.8; padding: 0 20px; }
     .tips-row { display: flex; gap: 8px; margin-top: 12px; }
-    .tip-card { flex: 1; background: #fff; border: 1.5px solid #f5b8d0; border-radius: 14px; padding: 10px 12px; display: flex; align-items: flex-start; gap: 8px; box-shadow: 0 1px 4px rgba(232,67,122,0.06); }
+    .tip-card { flex: 1; background: #fff; border: 1.5px solid #f5b8d0; border-radius: 14px; padding: 10px 12px; display: flex; align-items: flex-start; gap: 8px; box-shadow: 0 1px 4px rgba(232,67,122,0.06); min-width: 0; }
     .tip-icon { font-size: 16px; line-height: 1; margin-top: 1px; }
-    .tip-text { font-size: 11px; color: #c090b0; line-height: 1.5; }
+    .tip-text { font-size: 11px; color: #c090b0; line-height: 1.5; min-width: 0; }
     .tip-text strong { display: block; color: #b060a0; font-weight: 600; font-size: 12px; margin-bottom: 1px; }
     .tryon-action { margin-top: 14px; display: flex; gap: 10px; align-items: center; }
     .tryon-btn { flex: 1; padding: 13px 20px; background: #e8437a; color: #fff; border: none; border-radius: 30px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
@@ -69,20 +69,109 @@
     .save-btn { display: flex; align-items: center; gap: 7px; padding: 10px 16px; border: 1.5px solid #f5b8d0; background: #fff; border-radius: 30px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600; color: #e8437a; cursor: pointer; transition: all 0.15s; margin-top: 10px; width: 100%; justify-content: center; }
     .save-btn:hover { background: #fce8f0; border-color: #e8437a; }
     .save-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
-    .error-toast { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; padding: 12px 20px; border-radius: 30px; font-size: 13px; font-family: 'DM Sans', sans-serif; z-index: 999; white-space: nowrap; }
+    .error-toast { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; padding: 12px 20px; border-radius: 30px; font-size: 13px; font-family: 'DM Sans', sans-serif; z-index: 999; white-space: nowrap; max-width: 90vw; }
     .error-toast.show { display: block; }
+
+    /* ============================================
+       RESPONSIVE — TABLET (≤900px): keep 3 columns
+       but let them shrink instead of overflowing
+    ============================================ */
+    @media (max-width: 900px) {
+      .selected-item-panel, .result-panel { width: 160px; }
+      .selected-item-card img { height: 190px; }
+    }
+
+    /* ============================================
+       RESPONSIVE — PHONE (≤600px, e.g. iPhone in
+       portrait): stack everything vertically
+    ============================================ */
     @media (max-width: 600px) {
-  .tryon-page-header { padding: 16px 14px 0; }
-  .tryon-page-header h1 { font-size: 20px; }
-  .steps-row { padding: 14px 14px 0; }
-  .step span { display: none; } /* keep just the numbered circles on very small screens */
-  .tryon-wrapper { padding: 14px 14px 90px; gap: 12px; } /* extra bottom padding clears the new bottom nav */
-  .upload-zone { min-height: 240px; }
-  .upload-zone.has-image { min-height: 280px; }
-  .tips-row { flex-direction: column; }
-  .tryon-action { flex-direction: column; }
-  .reset-btn { width: 100%; }
-}
+      body { -webkit-text-size-adjust: 100%; }
+
+      .tryon-page-header { padding: 16px 16px 0; }
+      .tryon-page-header h1 { font-size: 20px; }
+      .tryon-page-header p { font-size: 12.5px; }
+
+      .steps-row { padding: 14px 16px 0; }
+      .step { font-size: 11px; gap: 5px; }
+      .step-num { width: 20px; height: 20px; }
+      .step-line { margin: 0 6px; }
+
+      /* stack the three panels instead of squeezing them side by side */
+      .tryon-wrapper {
+        flex-direction: column;
+        padding: 14px 16px calc(90px + env(safe-area-inset-bottom));
+        gap: 18px;
+      }
+
+      .selected-item-panel,
+      .result-panel,
+      .upload-panel {
+        width: 100%;
+      }
+
+      /* selected item card: show as a compact horizontal row on phone */
+      .selected-item-panel { display: flex; flex-direction: column; }
+      .selected-item-card {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 8px;
+      }
+      .selected-item-card img {
+        width: 90px;
+        height: 90px;
+        flex-shrink: 0;
+      }
+      .selected-item-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 10px 14px;
+      }
+      .change-item-btn { width: auto; align-self: flex-start; padding: 8px 16px; }
+
+      .upload-zone { min-height: 260px; border-radius: 18px; }
+      .upload-zone.has-image { min-height: 300px; }
+      .upload-icon-circle { width: 46px; height: 46px; }
+      .upload-title { font-size: 14px; }
+      .upload-sub { font-size: 11.5px; padding: 0 12px; }
+
+      .tips-row { flex-direction: column; gap: 8px; margin-top: 10px; }
+      .tip-card { padding: 9px 12px; }
+
+      .tryon-action { flex-direction: column; margin-top: 12px; }
+      .tryon-btn {
+        width: 100%;
+        padding: 14px 20px;   /* comfortable 44px+ tap target */
+        font-size: 15px;
+      }
+      .reset-btn { width: 100%; padding: 12px 18px; }
+
+      /* result panel becomes a full-width block below the upload area */
+      .result-box { min-height: 220px; }
+      .result-placeholder { padding: 20px 14px; }
+
+      .error-toast {
+        bottom: calc(24px + env(safe-area-inset-bottom));
+        font-size: 12.5px;
+        padding: 11px 18px;
+        white-space: normal;
+        text-align: center;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE — SMALL PHONE (≤375px, iPhone SE /
+       mini widths): trim further
+    ============================================ */
+    @media (max-width: 375px) {
+      .tryon-page-header h1 { font-size: 18px; }
+      .step span { display: none; } /* icons only on very narrow screens */
+      .step-line { margin: 0 4px; }
+      .selected-item-card img { width: 72px; height: 72px; }
+      .upload-title { font-size: 13px; }
+      .upload-sub { font-size: 11px; }
+    }
   </style>
 </head>
 <body>
