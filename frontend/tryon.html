@@ -71,7 +71,18 @@
     .save-btn svg { width: 13px; height: 13px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
     .error-toast { display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a1a; color: #fff; padding: 12px 20px; border-radius: 30px; font-size: 13px; font-family: 'DM Sans', sans-serif; z-index: 999; white-space: nowrap; }
     .error-toast.show { display: block; }
-    @media (max-width: 860px) { .tryon-wrapper { flex-direction: column; } .selected-item-panel, .result-panel { width: 100%; } }
+    @media (max-width: 600px) {
+  .tryon-page-header { padding: 16px 14px 0; }
+  .tryon-page-header h1 { font-size: 20px; }
+  .steps-row { padding: 14px 14px 0; }
+  .step span { display: none; } /* keep just the numbered circles on very small screens */
+  .tryon-wrapper { padding: 14px 14px 90px; gap: 12px; } /* extra bottom padding clears the new bottom nav */
+  .upload-zone { min-height: 240px; }
+  .upload-zone.has-image { min-height: 280px; }
+  .tips-row { flex-direction: column; }
+  .tryon-action { flex-direction: column; }
+  .reset-btn { width: 100%; }
+}
   </style>
 </head>
 <body>
