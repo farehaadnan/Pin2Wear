@@ -7,7 +7,7 @@ let allPins = [];
 let activeCategory = 'All';
 
 // ── Load pins from JSON ──────────────────────────────────────────
-fetch('data/pins.json')
+fetch('frontend/pins.json')
   .then(res => res.json())
   .then(data => {
     allPins = data;
