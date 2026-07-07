@@ -6,7 +6,7 @@ A web app that lets users browse outfits and see how they'd look wearing them, p
 
 ![Pin2Wear result](docs/demo/res.png)
 
-**Live app:** https://pin2wearr.netlify.app
+**Live app:** https://pin2wear.netlify.app
 
 ---
 
