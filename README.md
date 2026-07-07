@@ -107,6 +107,11 @@ Then update `API_URL` in `frontend/tryon.html` to point to your local backend (e
 
 CatVTON is a **generative** model, not a physical fit simulator — it predicts plausible pixels based on patterns learned from training data, rather than simulating fabric, body measurements, or physics. This leads to some known failure modes:
 
+- **Shared GPU quota** — the backend uses a free Hugging Face account's 
+  ZeroGPU quota to run CatVTON inference. This quota is limited and shared 
+  across all users of the deployed app; if exhausted, try-on requests will 
+  fail with a quota error until it resets (or unless upgraded to Hugging 
+  Face PRO for a larger daily allowance).
 - **Hallucinated details** — garment patterns, logos, or text printed on clothing may come out blurred, warped, or altered rather than exactly preserved.
 - **Distorted extremities** — like most diffusion models, hands and faces are the hardest structures to render correctly; occasional extra/missing fingers or subtly warped facial features can occur.
 - **Pose sensitivity** — since there's no explicit pose-estimation step, unusual poses, occluded limbs, or busy backgrounds can confuse the model, sometimes resulting in garments that look misaligned or "floating" on the body.
