@@ -426,6 +426,16 @@
         clearInterval(stepInterval);
         processingOverlay.classList.remove('active');
 
+        if (!data.success) {
+          if (data.error && data.error.includes('ZeroGPU quota')) {
+            showError('⚠️ Daily AI quota exceeded. Please try again later.');
+          } else {
+            showError(`⚠️ ${data.error || 'Something went wrong. Please try again.'}`);
+          }
+          tryOnBtn.disabled = false;
+          return;
+        }
+
         if (data.extracted_garment) {
           document.getElementById('selectedItemImg').src = data.extracted_garment;
         }
@@ -436,7 +446,7 @@
         console.error(err);
         clearInterval(stepInterval);
         processingOverlay.classList.remove('active');
-        showError('⚠️ Server not reachable. Make sure your Colab cell is still running.');
+        showError('⚠️ Server not reachable. Please try again in a moment.');
       }
 
       tryOnBtn.disabled = false;
